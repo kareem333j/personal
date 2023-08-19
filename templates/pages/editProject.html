@@ -1,0 +1,387 @@
+{% extends 'header/header.html' %}
+{% block dashPhone %}
+<li class="nav-item">
+    <a class="nav-link p-lg-3 dashboard dashPhone" aria-current="page" href="{% url 'dashboard' %}">Dashboard</a>
+</li>
+{% endblock dashPhone %}
+{% block content %}
+{% load static %}
+<title>Karem | Edit-{{project.name}}</title>
+<style>
+    section{
+        min-height: 100vh;
+        width: 100%;
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+    .them{
+        margin: auto;
+        width: 70%;
+        background-color: #fff;
+        margin-bottom: 20px;
+    }
+    .div-info .img img{
+        width: 100%;
+        height: 100%;
+    }
+    .images .img-div{
+        padding: 0;
+        margin: 10px;
+        position: relative;
+        overflow: hidden;
+        border: 0.1px solid rgba(128, 128, 128, 0.609);
+        border-radius: 5px;
+        height: 200px;
+    }
+    .images .img-div button{
+        background-color: black;
+        border: 0;
+        outline: 0;
+        padding:5px;
+        border-radius: 10px;
+        position: absolute;
+        top: -100px;
+        right: 10px;
+        font-size: 1.3em;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: 0.3s;
+    }
+    .images .img-div button:hover{
+        color: var(--green-color);
+    }
+    .images .img-div:hover{
+        border: 3px solid var(--green-color);
+    }
+    .images .img-div:hover > button{
+        top: 10px;
+    }
+    @media (max-width: 768px) {
+        .them{
+            width: 90%;
+        }
+    }
+
+    .upload-img{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(0,0,0,.4);
+        z-index: 999;
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
+    .upload-img form{
+        background-color: #fff;
+        border-radius: 5px;
+        width: 500px;
+        display: flex;
+        flex-direction: column;
+        padding: 15px 10px;
+        transition: 1s all ease;
+        border-radius: 10px;
+        padding: 20px;
+    }
+    @media (max-width: 768px) {
+        .upload-img form{
+            width: 90%;
+        }
+    }
+
+    .DeleteSection{
+        background-color: rgba(0,0,0,.4);
+        position: fixed;
+        top: 0;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .DeleteDiv{
+        background-color: #fff;
+        border-radius: 5px;
+        width: 500px;
+        display: flex;
+        flex-direction: column;
+        padding: 15px 10px;
+        transition: 1s all ease;
+      }
+      .DeleteDiv h3{
+        font-size: 1.3em;
+        padding: 10px 0;
+        text-align: center;
+      }
+      .DeleteDiv div{
+        width: 100%;
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        padding: 5px;
+        background-color: #ffffff78;
+      }
+      .DeleteDiv button,.DeleteDiv a{
+        padding: 5px 10px;
+        font-size: 1.2em;
+        border: 0;
+        outline: 0;
+        cursor: pointer;
+        font-weight: bold;
+        border-radius: 5px;
+        text-decoration: none;
+      }
+    
+      .cancelCommentBtn{
+        background-color: #7cd1f9;
+        color: #fff;
+      }
+      .deleteCommentBtn{
+        background-color: red;
+        color: #fff;
+        margin-left: 10px;
+      }
+      @media (max-width:768px) {
+    
+        .DeleteDiv{
+          width: 90%;
+        }
+      }
+      .lang-icons{
+        width: 100%;
+        background-color: #d1d1d13c;
+        padding: 10px 20px;
+        border-radius: 10px;
+        margin-top: 55px;
+        overflow: hidden;
+        height: 43px;
+        transition: all 0.9s;
+    }
+    .lang-icons p{
+        width: 100%;
+        cursor: pointer;
+    }
+    .lessIcon{
+        opacity: 0;
+    }
+
+</style>
+<section>
+    <div class="them" style="background-color:transparent !important;">
+        <h3 class="fw-bold mt-5">Project-Info:</h3>
+    </div>
+    <div class="div-info row them">
+        <div class="img col-lg-3">
+            <img class="img-fluid" src="{{project.img.url}}" alt="project-img">
+        </div>
+        <div class="col-lg-9 p-4">
+            <h3>{{project.name}}</h3>
+            <p><strong style="font-size:1.2em !important">Description: </strong>{{project.description}}</p>
+        </div>
+    </div>
+    <div class="them" style="background-color:transparent !important;">
+        <button class="btn main-btn btn-danger DeleteComment">Delete</button>
+    </div>
+
+    <div class="them" style="background-color:transparent !important;">
+        <h3 class="fw-bold mt-5">Project-Images:</h3>
+    </div>
+    <div class="them row p-3 images">
+        <div class="img-div col-lg-3">
+            <img style="width: 100%;height:100%" class="img-fluid" src="{{projectImgs.img1.url}}" alt="img">
+            <button class="update-img" data-img="img1"><i class="fa-solid fa-pen-to-square"></i></button>
+        </div>
+        <div class="img-div col-lg-3">
+            <img style="width: 100%;height:100%" class="img-fluid" src="{{projectImgs.img2.url}}" alt="img">
+            <button class="update-img" data-img="img2"><i class="fa-solid fa-pen-to-square"></i></button>
+        </div>
+        <div class="img-div col-lg-3">
+            <img style="width: 100%;height:100%" class="img-fluid" src="{{projectImgs.img3.url}}" alt="img">
+            <button class="update-img" data-img="img3"><i class="fa-solid fa-pen-to-square"></i></button>
+        </div>
+    </div>
+
+    <div class="them" style="background-color:transparent !important;">
+        <h3 class="fw-bold mt-5">Edit-Info:</h3>
+    </div>
+    <form class="them p-4" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="projectName" class="form-label fw-bold">Project Name: </label>
+            <input value="{{project.name}}" type="text" name="projectName" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="projectDescription" class="form-label fw-bold">Description: </label>
+            <textarea type="text" cols="12" rows="8" name="projectDescription" class="form-control">{{project.description}}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="projectName" class="form-label fw-bold">Link: </label>
+            <input type="url" name="link" class="form-control" placeholder="www.project.example" value="{{project.link}}">
+        </div>
+        <div class="mb-3">
+            <label for="projectImage" class="form-label fw-bold">Main Image: </label>
+            <input style="cursor: pointer !important;" type="file" name="pro-image" class="form-control l-user" aria-describedby="emailHelp" src="{{project.img.url}}">
+            <!-- <input src="" type="file" name="projectPhoto" class="form-control"> -->
+            <div id="emailHelp" class="form-text u-help">{{project.img.url}}</div>
+        </div>
+        <div class="mb-3 lang-icons">
+            <p class="m-0 fw-bold d-flex justify-content-between align-items-center mb-4 moreIcon"><span>Add language icons</span><i id="icon" class="fa-solid fa-caret-up"></i></p>
+            <p class="m-0 fw-bold d-flex justify-content-between align-items-center mb-4 lessIcon"><span>Add language icons</span><i id="icon" class="fa-solid fa-caret-down"></i></p>
+            <div class="mb-3 form-check">
+                {% if project.js == True %}
+                <input style="cursor: pointer;" type="checkbox" name="javascript" class="form-check-input" id="javascripts" checked>
+                {% else %}
+                <input style="cursor: pointer;" type="checkbox" name="javascript" class="form-check-input" id="javascripts">
+                {% endif %}
+                <label style="cursor: pointer;" class="form-check-label" for="javascripts">JavaScript</label>
+            </div>
+            
+            <div class="mb-3 form-check">
+                {% if project.dj == True %}
+                <input style="cursor: pointer;" type="checkbox" name="django" class="form-check-input" id="django" checked>
+                {% else %}
+                <input style="cursor: pointer;" type="checkbox" name="django" class="form-check-input" id="django">
+                {% endif %}
+                <label style="cursor: pointer;" class="form-check-label" for="django">Django</label>
+            </div>
+            <div class="mb-3 form-check">
+                {% if project.html == True %}
+                <input style="cursor: pointer;" type="checkbox" name="html" class="form-check-input" id="html" checked>
+                {% else %}
+                <input style="cursor: pointer;" type="checkbox" name="html" class="form-check-input" id="html">
+                {% endif %}
+                <label style="cursor: pointer;" class="form-check-label" for="html">Html</label>
+            </div>
+            <div class="mb-3 form-check">
+                {% if project.css == True %}
+                <input style="cursor: pointer;" type="checkbox" name="css" class="form-check-input" id="css" checked>
+                {% else %}
+                <input style="cursor: pointer;" type="checkbox" name="css" class="form-check-input" id="css">
+                {% endif %}
+                <label style="cursor: pointer;" class="form-check-label" for="css">Css</label>
+            </div>
+            <div class="mb-3 form-check">
+                {% if project.py == True %}
+                <input style="cursor: pointer;" type="checkbox" name="python" class="form-check-input" id="python" checked>
+                {% else %}
+                <input style="cursor: pointer;" type="checkbox" name="python" class="form-check-input" id="python">
+                {% endif %}
+                <label style="cursor: pointer;" class="form-check-label" for="python">Python</label>
+            </div>
+            <div class="mb-3 form-check">
+                {% if project.bootS == True %}
+                <input style="cursor: pointer;" type="checkbox" name="bootstrap" class="form-check-input" id="bootstrap" checked>
+                {% else %}
+                <input style="cursor: pointer;" type="checkbox" name="bootstrap" class="form-check-input" id="bootstrap">
+                {% endif %}
+                <label style="cursor: pointer;" class="form-check-label" for="bootstrap">BootStrap</label>
+            </div>
+            <div class="mb-3 form-check">
+                {% if project.bostG == True %}
+                <input style="cursor: pointer;" type="checkbox" name="postgresql" class="form-check-input" id="postgresql" checked>
+                {% else %}
+                <input style="cursor: pointer;" type="checkbox" name="postgresql" class="form-check-input" id="postgresql">
+                {% endif %}
+                <label style="cursor: pointer;" class="form-check-label" for="postgresql">Postgresql</label>
+            </div>
+        </div>
+        <button class="btn main-btn btn-success">Update</button>
+    </form>
+
+
+</section>
+<div class="upload-img">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="projectImage" class="form-label fw-bold">Update project image: </label>
+            <input type="hidden" name="imgNum" class="imgNum">
+            <input src="{{project.img.url}}" type="file" name="proImg" class="form-control" required>
+        </div>
+        <br>
+        <button class="btn main-btn btn-success">Update</button>
+    </form>
+</div>
+
+<script>
+    let uploadImgSec = document.querySelector(".upload-img");
+    let updateBtns = document.querySelectorAll(".update-img");
+    uploadImgSec.addEventListener('click',(e)=>{
+        if(e.target.className == "upload-img"){
+            uploadImgSec.style.display = "none";
+        }
+    });
+    updateBtns.forEach((e)=>{
+        e.addEventListener('click',()=>{
+            uploadImgSec.style.display = "flex";
+            let imgNum = document.querySelector(".imgNum");
+            imgNum.value = e.getAttribute("data-img")
+        });
+    });
+    
+
+    let DeleteCommentBtn = document.querySelectorAll(".DeleteComment");
+    let deleteSection = document.createElement("div");
+    let deleteDiv = document.createElement("form");
+    let header = document.createElement("h3");
+    let headerTxt = document.createTextNode("Are your sure you want to delete this project?");
+    let inputHidden = document.createElement("input");
+    let inputid = document.createElement("input");
+    let DivBtns = document.createElement("div");
+    let buttonDelete = document.createElement("button");
+    let buttonDeleteTxt = document.createTextNode("Delete");
+    let buttonCancel = document.createElement("a");
+    let buttonCancelTxt = document.createTextNode("Cancel");
+
+    deleteDiv.method = "GET";
+    deleteDiv.className = "DeleteDiv";
+    deleteSection.className = "DeleteSection";
+    buttonCancel.className = "cancelCommentBtn";
+    buttonDelete.className = "deleteCommentBtn";
+    deleteSection.appendChild(deleteDiv);
+    deleteDiv.appendChild(inputHidden);
+    deleteDiv.appendChild(inputid);
+    header.appendChild(headerTxt);
+    deleteDiv.append(header);
+    inputHidden.type = "hidden";
+    inputHidden.name = "action";
+    inputid.type = "hidden";
+    inputid.name = "ComId";
+    deleteDiv.appendChild(DivBtns);
+    DivBtns.appendChild(buttonCancel);
+    DivBtns.appendChild(buttonDelete);
+    buttonCancel.appendChild(buttonCancelTxt);
+    buttonDelete.appendChild(buttonDeleteTxt);
+    var ComId;
+    DeleteCommentBtn.forEach((e)=>{
+        e.onclick = function(){
+        document.body.appendChild(deleteSection);
+        inputHidden.value = "delete";
+        console.log(e.id);
+        inputid.value = e.id;
+        }
+    });
+    buttonCancel.onclick = ()=>{
+        inputid.value = "";
+        deleteSection.remove();
+    }
+
+    let addLangs = document.querySelector(".lang-icons .moreIcon");
+    let lessIcons = document.querySelector(".lang-icons .lessIcon");
+    let divLangs = document.querySelector(".lang-icons");
+    addLangs.addEventListener('click', ()=>{
+        divLangs.style.height = '350px';
+        lessIcons.style = "opacity:1";
+        addLangs.style = "display:none !important";
+    });
+    lessIcons.addEventListener('click', ()=>{
+        divLangs.style.height = '43px';
+        lessIcons.style = "opacity:0";
+        addLangs.style = "display:flex !important";
+    });
+</script>
+{% endblock content %}

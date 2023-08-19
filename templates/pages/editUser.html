@@ -1,0 +1,191 @@
+{% extends 'header/header.html' %}
+{% block dashPhone %}
+<li class="nav-item">
+    <a class="nav-link p-lg-3 dashboard dashPhone" aria-current="page" href="{% url 'dashboard' %}">Dashboard</a>
+</li>
+{% endblock dashPhone %}
+{% block content %}
+{% load static %}
+<title>Karem Magdy | Edit-User</title>
+
+<style>
+    section{
+        width: 100%;
+        min-height: 100vh;
+        background-color: var(--section-color);
+        display: flex;
+        justify-content: center;
+        align-items: start;
+        padding-top: 100px;
+    }
+    .container form{
+        width: 100%;
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 30px;
+        flex-direction: column;
+        margin: auto;
+    }
+    .user-info{
+        width: 100%;
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 30px;
+        flex-direction: column;
+        margin: auto;
+        margin-bottom: 20px;
+    }
+    .container form button{
+        background-color: rgb(72, 235, 72);
+        color: #fff;
+        font-weight: bold;
+    }
+    .container form button:hover{
+        background-color: rgb(72, 235, 72);
+        opacity: 0.9;
+    }
+    .container form div input{
+        cursor: pointer;
+    }
+    .container form div{
+        width: 100%;
+    }
+    .container form .form-check{
+        justify-content: space-between;
+    }
+    .container .user-data{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+    .container .user-data img{
+        border-radius: 100%;
+        border: 0.1px solid black;
+        width: 150px;
+        height: 150px;
+    }
+    .div-form{
+        position: relative;
+    }
+    .container .user-info .com{
+        width: 100%;
+        background-color: var(--dark-color);
+        margin-bottom: 10px;
+        border-radius: 10px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .container .user-info .com h4{
+        color: #fff;
+        font-size: 1.1em;
+    }
+    .container .user-info .com p{
+        margin-bottom: 0;
+    }
+</style>
+
+
+<section>
+    <div class="container row">
+        <div class="user-data col-lg-2">
+            <img src="{{userId.img.url}}" alt="UserImg">
+        </div>
+        <div class="div-form col-lg-10 m-0 p-0">
+            
+            <h3 class="fw-bold">User-info:</h3>
+            <div class="user-info">
+                <h4 class="fw-bold">
+                    {{userId.name_f}} {{userId.name_l}}
+                    {% if userId.admin == True %}
+                    <span title="admin" style="color: blue;font-size:0.8em" class="material-symbols-outlined">
+                      verified
+                      </span>
+                    {% endif %}
+                </h4>
+                <p><strong>Date joined:</strong> <span class="text-black-50 fw-bold">{{userId.user.date_joined}}</span></p>
+                <p><strong>Last Login:</strong> <span class="text-black-50 fw-bold">{{userId.user.last_login}}</span></p>
+                <p><strong>User-ID:</strong> <span class="fw-medium">{{userId.user.id}}</span></p>
+                <p><strong>Email:</strong> <span class="fw-medium">{{userId.email}}</span></p>
+            </div>
+            <h3 class="fw-bold mt-5">User-settings:</h3>
+            <form method="POST">
+                
+                {% csrf_token %}
+                <div>
+                    {% if userId.admin == True %}
+                    <div class="mb-3 form-check">
+                        <label style="cursor: pointer;" class="form-check-label" for="admin">Admin</label>
+                        <input style="cursor: pointer;" type="checkbox" name="admin" id="admin" class="form-check-input" checked>
+                    </div>
+                    {% else %}
+                    <div class="mb-3 form-check">
+                        <label style="cursor: pointer;" class="form-check-label" for="admin">Admin</label>
+                        <input style="cursor: pointer;" type="checkbox" name="admin"  id="admin" class="form-check-input">
+                    </div>
+                    {% endif %}
+                </div>
+                <div>
+                    <div>
+                        {% if userId.assistant == True %}
+                        <div class="mb-3 form-check">
+                            <label style="cursor: pointer;" class="form-check-label" for="assistant">Assistant</label>
+                            <input style="cursor: pointer;" type="checkbox" name="assistant" id="assistant" class="form-check-input" checked>
+                        </div>
+                        {% else %}
+                        <div class="mb-3 form-check">
+                            <label style="cursor: pointer;" class="form-check-label" for="assistant">Assistant</label>
+                            <input style="cursor: pointer;" type="checkbox" name="assistant" id="assistant" class="form-check-input">
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <button class="btn main-btn">Update</button>
+            </form>
+            <h3 class="fw-bold mt-5">User-Comments:</h3>
+            <div class="user-info">
+                {% if comCount == 0 %}
+                    <div class="com text-center">
+                        <h4>No Comments</h4>
+                    </div>
+                {% else %}
+                    {% for i in comments %}
+                    <div class="com">
+                        <h4>{{i.commet}}</h4>
+                        <p class="text-white-50">{{i.time}}</p>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+
+            </div>
+    
+            
+            
+            <h3 class="fw-bold mt-5">User-Messages:</h3>
+            <div class="user-info">
+                {% if msgCount == 0 %}
+                    <div class="com text-center">
+                        <h4>No Messages</h4>
+                    </div>
+                {% else %}
+                    {% for i in msg %}
+                    <div class="com">
+                        <h4>{{i.msg}}</h4>
+                        <p class="text-white-50">{{i.time}}</p>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        
+    </div>
+</section>
+
+<script>
+    let homeBtn = document.querySelector(".nav-item .home");
+    let dashboardBtn = document.querySelector(".nav-item .dashboard");
+    homeBtn.classList.remove("active");
+    dashboardBtn.classList.add("active");
+</script>
+{% endblock content %}

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/bondi.css' %}">
+  <link rel="stylesheet" href="{% static 'css/register.css' %}">
+  <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+
+
+  <!-- link -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css.map' %}">
+  <title>Karem | Register</title>
+
+  <style>
+    .register{
+      min-height: 100vh;
+      background-color: #eff7fa;
+    }
+    .register form{
+      background-color: #fff;
+    }
+    .login-link{
+      text-decoration: none;
+    }
+    .login-link:hover{
+      text-decoration:underline;
+    }
+    @media (max-width: 768px) {
+      .register{
+        width: 100%;
+      }
+      .register form{
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+    <div class="register d-flex justify-content-center align-items-center flex-column">
+        
+        <form class="login" id="register-form" method="POST">
+            {% for msg in messages %}
+          <div class="alert alert-danger w-100 log-faild msg" role="alert">
+            <i class="fa-regular fa-circle-xmark me-2"></i>{{msg}}
+          </div>
+
+          <script>
+            let msg = document.querySelector(".log-faild");
+            setTimeout(()=>{
+              msg.style.cssText = "display:none"
+            },3000);
+          </script>
+          {% endfor %}
+            {% csrf_token %}
+            <div class="mb-4 text-center">
+                <h1>Register</h1>
+            </div>
+            <div class="mb-3 username-div fn registerUser">
+              <label for="exampleInputEmail1" class="form-label">Username</label>
+              {{form.username}}
+              <div id="emailHelp" class="form-text u-help"></div>
+            </div>
+            <div class="mb-3 username-div fn">
+              <label for="exampleInputEmail1" class="form-label">First Name</label>
+              {{form.first_name}}
+              <div id="emailHelp" class="form-text u-help"></div>
+            </div>
+            <div class="mb-3 username-div fn">
+              <label for="exampleInputEmail1" class="form-label">Last Name</label>
+              {{form.last_name}}
+              <div id="emailHelp" class="form-text u-help"></div>
+            </div>
+            <div class="mb-3 email-div fn">
+                <label for="exampleInputEmail1" class="form-label">Email</label>
+                {{form.email}}
+                <div id="emailHelp" class="form-text u-help"></div>
+              </div>
+            <div class="mb-3 pass-div fn">
+              <label for="exampleInputPassword1" class="form-label">Password</label>
+                {{form.password1}}
+              <!-- <input type="password" name="password" class="form-control l-pass"> -->
+              <div id="emailHelp" class="form-text p-help"></div>
+            </div>
+            <div class="mb-3 pass-div2 fn">
+                <label for="exampleInputPassword1" class="form-label">Confirm Password</label>
+                  {{form.password2}}
+                <div id="emailHelp" class="form-text p-help"></div>
+            </div>
+            <div id="emailHelp" class="form-text u-help">We'll never share your data with anyone else.</div>
+            <br>
+            <div class="mb-3 form-check">
+                <input style="cursor: pointer;" type="checkbox"  class="form-check-input" id="exampleCheck1">
+                <label style="cursor: pointer;" class="form-check-label" for="exampleCheck1">Show password</label>
+            </div>
+            <button id="register-btn" type="submit" class="btn btn-primary">Register</button>
+          </form>
+          <div id="emailHelp" class="form-text p-help d-flex justify-content-between"><p style="margin-right: 10px;font-size:1.1em">If you already have an account</p> <a class="login-link" href="{% url 'login' %}">Login</a></div>
+          
+    </div>
+    <div class="userNames">
+      {% for i in users %}
+      <p>{{i.user}}</p>
+      {% endfor %}
+    </div>
+    <script>
+      let inputs = document.querySelectorAll(".fn input");
+      inputs[0].id = 'username';
+      inputs[4].id = 'pass1';
+      inputs[5].id = 'pass2';
+
+      for(let i=0 ; i<inputs.length; i++){
+        inputs[i].classList.add('form-control');
+        inputs[i].classList.add('wanted');
+        inputs[i].required = true;
+        if(inputs[i].type == "email"){
+          inputs[i].id = 'emailField';
+        }
+      }
+
+      let showPass = document.querySelector(".form-check input");
+      showPass.addEventListener('click', ()=>{
+        if(inputs[4].type === "password"  && inputs[4].type == "password"){
+          inputs[4].type = "text";
+          inputs[5].type = "text";
+        }else if(inputs[5].type === "text" && inputs[5].type == "text"){
+          inputs[4].type = "password";
+          inputs[5].type = "password";
+        }
+      })
+      
+      let dataBaseUsernames = []
+    </script>
+
+    <script src="{% static 'js/all.min.js' %}"></script>
+    <script src="{% static 'js/input_check.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    
+</body>
+</html>

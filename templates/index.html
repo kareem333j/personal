@@ -1,0 +1,654 @@
+{% extends 'header/header.html' %}
+{% block dashPhone %}
+<li class="nav-item">
+    <a class="nav-link p-lg-3 dashboard dashPhone" aria-current="page" href="{% url 'dashboard' %}">Dashboard</a>
+</li>
+{% endblock dashPhone %}
+{% block content %}
+{% load static %}
+{% for blogName in blog %}
+<title>{{blogName.plogName}} | Home</title>
+{% endfor %}
+    
+<style>
+  .btnUp svg{
+    transition: 0.5s all ease;
+  }
+  .btnUp:hover svg{
+    color: var(--green-color);
+  }
+  @media (max-width:768px) {
+    .footer-content{
+      flex-direction: column;
+    }
+    .DeleteDiv{
+      width: 100px;
+    }
+  }
+
+  .Login-sweet:hover{
+    opacity: 0.8;
+  }
+  .more-content ul li a{
+    text-decoration: none;
+    color: #fff;
+    width: 100%;
+    display:inline-block;
+    cursor: pointer;
+  }
+  .more-content ul li a:hover{
+    color: var(--green-color);
+  }
+  .DeleteSection{
+    background-color: rgba(0,0,0,.4);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+  }
+  .DeleteDiv{
+    background-color: #fff;
+    border-radius: 5px;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    padding: 15px 10px;
+    transition: 1s all ease;
+  }
+  .DeleteDiv h3{
+    font-size: 1.3em;
+    padding: 10px 0;
+    text-align: center;
+  }
+  .DeleteDiv div{
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding: 5px;
+    background-color: #ffffff78;
+  }
+  .DeleteDiv button,.DeleteDiv a{
+    padding: 5px 10px;
+    font-size: 1.2em;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+    text-decoration: none;
+  }
+
+  .cancelCommentBtn{
+    background-color: #7cd1f9;
+    color: #fff;
+  }
+  .deleteCommentBtn{
+    background-color: red;
+    color: #fff;
+    margin-left: 10px;
+  }
+  @media (max-width:768px) {
+
+    .DeleteDiv{
+      width: 90%;
+    }
+  }
+
+  #slide1:checked ~ #controls label:nth-child(2),
+  #slide2:checked ~ #controls label:nth-child(3),
+  #slide3:checked ~ #controls label:nth-child(4),
+  #slide4:checked ~ #controls label:nth-child(1)
+{
+    background-image: url("{% static 'img/right.svg' %}");
+    position: absolute;
+    right: 0;
+
+}
+
+#slide1:checked ~ #controls label:nth-last-child(1),
+#slide2:checked ~ #controls label:nth-last-child(4),
+#slide3:checked ~ #controls label:nth-last-child(3),
+#slide4:checked ~ #controls label:nth-last-child(2)
+{
+  background-image: url("{% static 'img/left.svg' %}");
+  position: absolute;
+  left: 0;
+}
+.bast-comments{
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slide-content{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.slide-content .best-com{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.slide-content .best-com img{
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  border: 0.1px solid black;
+}
+.slide-content .best-com .com-data{
+  display: flex;
+  background-color: #fff;
+  flex-direction: column;
+  width: 92%;
+  justify-content: center;
+  align-items: start;
+  padding: 15px;
+  position: relative;
+  border-radius: 20px;
+}
+.slide-content .best-com .com-data p{
+  font-size: 0.9em;
+  color: #000;
+}
+.slide-content .best-com .com-data span{
+  font-size: 0.8em;
+}
+.slide-content .best-com .com-data h3{
+  color: #000;
+  font-size: 1.2em;
+}
+.slide-content .best-com .com-data h3 svg{
+  color: gold;
+  position: absolute;
+  font-size: 1.3em;
+  right: 15px;
+}
+#slides .inner{
+  line-height: 1 !important;
+}
+@media (min-width: 991px) {
+  .slide-content .best-com .com-data::before{
+    content: "";
+    border-width: 15px;
+    border-style: solid;
+    border-color: transparent #fff transparent transparent;
+    position: absolute;
+    top:15px;
+    left: -30px;
+  }
+}
+.tec .container .row div{
+  width: 40px;
+  height: 40px;
+}
+.tec .container .row img{
+  width: 40px;
+  height: 40px;
+}
+@media (max-width: 700px) {
+  .langs img{
+    width: 30px;
+    height: 30px;
+  }
+}
+.pro-img img{
+  border: 0.1px solid rgba(0, 0, 0, 0.124);
+  border-radius: 10px;
+}
+
+</style>
+
+ 
+      <section class="sec1 overflow-hidden">
+        <div class="container d-flex justify-content-between">
+          
+          <div class="who">
+            <h4 class="fa-2x"><span class="fw-bold braket"><\</span> Hello, it's Me <span class="fw-bold braket">></span></h4>
+            {% for blogName in blog %}
+            <h3 class="fa-4x">{{blogName.plogName}}</h3>
+            {% endfor %}
+            <div>
+              <span class="fa-3x fw-bold" id="text"></span>
+            </div>
+            <ul class="mt-3">
+              {% for i in social %}
+              <li><a href="{{i.facebook}}" target="_blank"><i class="fa-brands fa-facebook"> </i></a></li>
+              <li><a href="{{i.instagram}}" target="_blank"><i class="fa-brands fa-instagram"></i></a></li>
+              <li><a href="{{i.github}}" target="_blank"><i class="fa-brands fa-github">   </i></a></li>
+              <li><a href="{{i.linkedin}}" target="_blank"><i class="fa-brands fa-linkedin"> </i></a></li>
+              <!-- <li><a href="{{i.watsapp}}" target="_blank"><i class="fa-brands fa-whatsapp"> </i></a></li> -->
+              {% endfor %}
+            </ul>
+            <div class="lan-i">
+              <div><img src="{% static 'img/lang-icons/js.png' %}" alt="javaScript"></div>
+              <div><img src="{% static 'img/lang-icons/dj.png' %}" alt="Django"></div>
+              <div><img src="{% static 'img/lang-icons/python.png' %}" alt="Python"></div>
+              <div><img src="{% static 'img/lang-icons/bs.png' %}" alt="BootStrap"></div>
+              <div><img src="{% static 'img/lang-icons/css.png' %}" alt="Css"></div>
+              <div><img src="{% static 'img/lang-icons/pg.png' %}" alt="Postgresql "></div>
+              <div><img src="{% static 'img/lang-icons/html.png' %}" alt="Html"></div>
+            </div>
+          </div>
+          <div class="blob-div p-3">
+            <div class="blob">
+            </div>
+          </div>
+          
+        </div>
+      </section>
+
+      
+      <section id="projects" class="sec3 d-flex text-center">
+        
+        <div class="container d-flex justify-content-center align-items-center flex-column">
+          <div class="main-title position-relative mt-5 project-title">
+            <h1 class="fw-bold text-black-50 sec-title linear-te fa-4x">+20</h1>
+            <h3 class="fw-bolder"> Each project is a unique piece of <br><span class="linear-te"><span class="fw-bold braket"><\</span>development<span class="fw-bold braket">></span></span></h3>
+          </div>
+          <br><br><br><br>
+          <div class="row projectss-div pt-5">
+            <!-- 1 -->
+            
+            <div class="section-view">
+              <button class="exit-project"><i class="fa-solid fa-circle-xmark"></i></button>
+              <div class="div-view">
+                <div class="imgs-div">
+                  <div class="img active">
+                    <img class="img-fluid" src="{% static 'img/pro-img/project.png' %}" alt="project-img">
+                  </div>
+                  <div class="img">
+                    <img class="img-fluid" src="{% static 'img/pro-img/project.png' %}" alt="project-img">
+                  </div>
+                  <div class="img">
+                    <img class="img-fluid" src="{% static 'img/pro-img/project.png' %}" alt="project-img">
+                  </div>
+                </div>
+              </div>
+              <button class="prev"><i class="fa-solid fa-angle-left"></i></button>
+              <button class="next"><i class="fa-solid fa-angle-right"></i></button>
+              <div class="img-counter"><h3></h3></div>
+            </div>
+            {% for i in projects %}
+            <div class="col-lg-5 col-12 projectt hidden">
+              <div class="pro-img  overflow-hidden">
+                {% if i.img.url == '' %}
+                  <img class="img-fluid" src="{% static 'img/pro-img/project.png' %}" alt="project-img">
+                {% else %}
+                  <img class="img-fluid" src="{{i.img.url}}" alt="project-img">
+                {% endif %}
+              </div>
+              <div class="data-pro d-flex flex-column">
+                <h3>{{i.name}}</h3>
+                <p class="text-black-50 text-start">{{i.description}}</p>
+                <hr class="w-100">
+                <div class="langs row">
+                  <div class="icons col-8 d-flex justify-content-start">
+                    {% if i.dj == True %}
+                    <img src="{% static 'img/lang-icons/dj.png' %}" alt="lang">
+                    {% endif %}
+                    {% if i.js == True %}
+                    <img src="{% static 'img/lang-icons/js.png' %}" alt="lang"> 
+                    {% endif %}
+                    {% if i.css == True %}
+                    <img src="{% static 'img/lang-icons/css.png' %}" alt="lang">
+                    {% endif %}
+                    {% if i.py == True %}
+                    <img src="{% static 'img/lang-icons/python.png' %}" alt="lang">
+                    {% endif %}
+                    {% if i.html == True %}
+                    <img src="{% static 'img/lang-icons/html.png' %}" alt="lang">
+                    {% endif %}
+                    {% if i.bootS == True %}
+                    <img src="{% static 'img/lang-icons/bs.png' %}" alt="lang">
+                    {% endif %}
+                    {% if i.bostG == True %}
+                    <img src="{% static 'img/lang-icons/pg.png' %}" alt="lang">
+                    {% endif %}
+                    
+                  </div>
+                  <div class="col-4 d-flex justify-content-end align-items-center p-0" style="margin-right:-10px">
+                    {% if i.link == "" %}
+                    <button style="font-size: 0.9em;" data-id="{{i.id}}" class="btn main-btn view-project btn-pro"><i class="fa-solid fa-image"></i> view</button>
+                    {% else %}
+                    <a href="{{i.link}}" target="_blank" style="font-size: 0.9em;background-color:var(--dark-color);color:#fff" data-id="{{i.id}}" class="btn main-btn fw-bold btn-pro"><i class="fa-solid fa-arrow-up-right-from-square"></i> visit</a>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+
+        </div>
+      </section>
+
+
+      <section id="about" class="sec2 d-flex text-center pt-5 mb-0">
+        <div class="container">
+          <div class="main-title position-relative mt-5">
+            <h2 class="fw-bold text-black-50 sec-title">About</h2>
+          </div>
+          <div class="row pt-5 overflow-hidden">
+              <div class="col-lg-6 text-lg-start skills">
+                <h3 class="fw-bold mb-4"><span class="fw-bold braket"><\</span> I'm <span class="about-title">Full Stack Web Developer</span><span class="fw-bold braket">></span></h3>
+                {% for about in About %}
+                <p>{{about.aboutS1}}</p>
+                <p>{{about.aboutS2}}</p>
+                <p>{{about.aboutS3}}</p>
+                <p>{{about.aboutS4}}</p>
+                <p>{{about.aboutSkills}}</p>
+                {% endfor %}
+              </div>
+              <div class="col-lg-6 overflow-hidden">
+                <img src="{% static 'img/about.png' %}" alt="About-loading" class="w-100" style="margin-top: -70px;">
+              </div>
+            </div>
+        </div>
+      </section>
+
+      <section id="contact" class="contact mt-0 pt-2">
+        <div class="container pb-5 p-lg-5">
+          <div class="main-title position-relative mt-5 project-title text-center">
+            <h1 class="fw-bold text-black-50 sec-title linear-te">Quick Contact Address</h1>
+            <p class="fw-bolder text-black-50">Don't be shy! Hit me up!</p>
+          </div>
+          <div class="row contact-address d-flex justify-content-between mt-5">
+            <div class="col-lg-4 p-4">
+              <i class="fa-solid fa-mobile-screen ic-cont"></i>
+              <h3>Contact Numbers</h3>
+              <p class="text-black-50"><i class="fa-solid fa-phone me-2"></i>+(20) 1023681084</p>
+            </div>
+            <div class="col-lg-4 p-4">
+              <i class="fa-solid fa-envelope ic-cont"></i>
+              <h3>Email Address</h3>
+              <p class="text-black-50"><i class="fa-solid fa-paper-plane me-2"></i>karem147j@gmail.com</p>
+            </div>
+            <div class="col-lg-4 p-4">
+              <i class="fa-solid fa-map-location-dot ic-cont"></i>
+              <h3>Address</h3>
+              <p class="text-black-50"><i class="fa-solid fa-location-dot me-2"></i>Egypt, Mansoura</p>
+            </div>
+          </div>
+          <div class="row send-message p-3 pt-5">
+              <div class="col-lg-6">
+                <h1>Contact Us</h1>
+                <form method="GET" class="hidden">
+                  {% if user.is_authenticated %}
+                  {% else %}
+                  <div class="form-floating mb-3 mt-3">
+                    <input type="text" name="AnonName" class="form-control" id="floatingInput" placeholder="name@example.com" required>
+                    <label for="floatingInput"  class="text-black-50">Name</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <input type="email" name="AnonEmail" class="form-control" id="floatingInput" placeholder="name@example.com" required>
+                    <label for="floatingInput"  class="text-black-50">Email</label>
+                  </div>
+                  {% endif %}
+                  <div class="form-floating mb-3">
+                    <textarea name="userMsg" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 150px" required></textarea>
+                    <label for="floatingTextarea2" class="text-black-50">Message</label>
+                  </div>
+                  <button class="btn mb-5 fw-bold p-2"><i class="fa-solid fa-paper-plane me-1"></i> Send Message</button>
+                </form>
+              </div>
+              <div class="col-lg-6">
+                <img class="img-fluid" src="{% static 'img/contact.svg' %}" alt="contact-img">
+              </div>
+          </div>
+          
+        </div>
+      </section>
+
+
+      <section id="comments" class="contact mt-0 pt-2">
+        <div class="container pb-5 p-lg-5">
+          <div class="main-title position-relative mt-5 project-title text-center">
+            <h1 class="fw-bold text-black-50 sec-title linear-te">Comments</h1>
+            <p class="fw-bolder text-black-50">Share your opinion we care about</p>
+          </div>
+          <br><br>
+          <h1 class="d-flex justify-content-between align-items-center" style="font-size: 1.5em;width:100%"><strong>Best Comments:</strong></h1>
+
+          <div class="bast-comments">
+            <div id="slider">
+              <input type="radio" name="slider" id="slide1" checked>
+              <input type="radio" name="slider" id="slide2">
+              <input type="radio" name="slider" id="slide3">
+              <input type="radio" name="slider" id="slide4">
+              <div id="slides">
+                <div id="overflow">
+                  <div class="inner">
+                    <!-- 1 -->
+                    {% for i in comments %}
+                    {% if i.best == True %}
+                    <div class="slide">
+                      <div class="slide-content">
+                        <div class="best-com">
+                          <img class="img-fluid" src="{{i.user.img.url}}" alt="userImg">
+                          <div class="com-data m-0">
+                            <h3 class="mb-0"><a class="text-decoration-none text-black" href="/profile/{{i.user.user.id}}/">
+                              {{i.user.name_f}} {{i.user.name_l}}
+                              {% if i.user.admin == True %}
+                              <span title="admin" style="color: blue;" class="material-symbols-outlined">
+                                verified
+                                </span>
+                              {% endif %}</a>
+                              <i title="Best Comment" class="fa-solid fa-star"></i>
+                            </h3>
+                            <p class="text-black-50 fw-bold mb-2">@{{i.user.user.username}}</p>
+                            <span class="text-black-50 mb-1">{{i.time}}</span>
+                            <p class="mt-2 fw-medium">{{i.commet}}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              <div id="controls">
+                <label for="slide1"></label>
+                <label for="slide2"></label>
+                <label for="slide3"></label>
+                <label for="slide4"></label>
+              </div>
+              <div id="bullets">
+                <label for="slide1"></label>
+                <label for="slide2"></label>
+                <label for="slide3"></label>
+                <label for="slide4"></label>
+              </div>
+            </div>
+          </div>
+          <script>
+            let slides = document.querySelectorAll("#slides .inner .slide")
+            for(let i = 0; i < slides.length; i++){
+              slides[i].classList.add(`slide_${i+1}`)
+            }
+          </script>
+          <br><br><br>
+
+          <!-- all comments -->
+          <h1 style="font-size: 1.5em;"><strong>All:</strong><span style="color:var(--green-color)" class="ms-2 fw-bold linear-te">{{comments.count}}</span></h1>
+          <br>
+          {% for com in comments %}
+          <div class="user-comment mb-3 hidden position-relative">
+            <img src="{{com.user.img.url}}" alt="user-img" class="img-fluid me-lg-4">
+            <div class="bg-white com">
+              <h3 class="mb-0"><a class="text-decoration-none text-black" href="/profile/{{com.user.user.id}}/">
+                {{com.user.name_f}} {{com.user.name_l}}
+                {% if com.user.admin == True %}
+                <span title="admin" style="color: blue;" class="material-symbols-outlined">
+                  verified
+                  </span>
+                {% endif %}</a>
+              </h3>
+              <p class="text-black-50 fw-bold mb-0">@{{com.user.user.username}}</p>
+              <span class="text-black-50">{{com.time}}</span>
+              <p class="mt-2 fw-medium">{{com.commet}}</p>
+            </div>
+            {% if com.favourite == True %}
+              <i style="color: gold;position:absolute;right:28px;bottom:15px" title="Favourite" class="fa-solid fa-star Favourite"></i>
+              {% if com.best == True %}
+                <i style="color: blue;position:absolute;right:18px;bottom:15px" title="Best" class="fa-solid fa-star Best"></i>
+              {% endif %}
+            {% endif %}
+            {% if request.user.Profile.admin == True or request.user.Profile.assistant == True %}
+              <button id="more-btn" style="border: 0;outline:0;background:#fff" class="more-comment"><i id="more-i" class="fa-solid fa-ellipsis"></i></button>
+              <div class="more-content" style="top:15px" id="more-content">
+                <ul class="list-unstyled">
+                    <li><a class="fw-bold DeleteComment" id="{{com.id}}">Delete</a></li>
+                    {% if com.favourite == False %}
+                    <li><a class="fw-bold favourite" id="{{com.id}}">Favourite</a></li>
+                    {% endif %}
+                    {% if com.favourite == True and com.best == False %}
+                    <li><a class="fw-bold delete-favourite" id="{{com.id}}">Remove Favourite</a></li>
+                    {% endif %}
+                    {% if com.favourite == True %}
+                      {% if com.best == False %}
+                      <li><a class="fw-bold best" id="{{com.id}}">Best</a></li>
+                      {% endif %}
+                      {% if com.best == True %}
+                        <li><a class="fw-bold delete-best" id="{{com.id}}">Remove Best</a></li>
+                      {% endif %}
+                    {% endif %}
+                </u>
+              </div>
+              
+            {% endif %}
+          </div>
+          {% endfor %}
+          {% if request.user.Profile.admin == True or request.user.Profile.assistant == True %}
+          <script>
+            let DeleteCommentBtn = document.querySelectorAll(".DeleteComment");
+            let deleteSection = document.createElement("div");
+            let deleteDiv = document.createElement("form");
+            let header = document.createElement("h3");
+            let headerTxt = document.createTextNode("Are your sure you want to delete this comment?");
+            let inputHidden = document.createElement("input");
+            let inputid = document.createElement("input");
+            let DivBtns = document.createElement("div");
+            let buttonDelete = document.createElement("button");
+            let buttonDeleteTxt = document.createTextNode("Delete");
+            let buttonCancel = document.createElement("a");
+            let buttonCancelTxt = document.createTextNode("Cancel");
+
+            let addFavouriteBtn = document.querySelectorAll(".favourite");
+            let deleteFavourite = document.querySelectorAll(".delete-favourite");
+            let addBest = document.querySelectorAll(".best");
+            let deleteBest = document.querySelectorAll(".delete-best");
+            
+            
+
+            deleteDiv.method = "GET";
+            deleteDiv.className = "DeleteDiv";
+            deleteSection.className = "DeleteSection";
+            buttonCancel.className = "cancelCommentBtn";
+            buttonDelete.className = "deleteCommentBtn";
+            deleteSection.appendChild(deleteDiv);
+            deleteDiv.appendChild(inputHidden);
+            deleteDiv.appendChild(inputid);
+            header.appendChild(headerTxt);
+            deleteDiv.append(header);
+            inputHidden.type = "hidden";
+            inputHidden.name = "action";
+            inputid.type = "hidden";
+            inputid.name = "ComId";
+            deleteDiv.appendChild(DivBtns);
+            DivBtns.appendChild(buttonCancel);
+            DivBtns.appendChild(buttonDelete);
+            buttonCancel.appendChild(buttonCancelTxt);
+            buttonDelete.appendChild(buttonDeleteTxt);
+            var ComId;
+            // delete comment
+            DeleteCommentBtn.forEach((e)=>{
+              e.onclick = function(){
+                header.innerHTML = "Are your sure you want to delete this comment?";
+                buttonDelete.innerHTML = "Delete";
+                document.body.appendChild(deleteSection);
+                inputHidden.value = "delete";
+                inputid.value = e.id;
+              }
+            });
+            // add comment to fav
+            addFavouriteBtn.forEach((e)=>{
+              e.onclick = function(){
+                header.innerHTML = "Are your sure you want to add this comment to favourite?";
+                buttonDelete.innerHTML = "Add";
+                document.body.appendChild(deleteSection);
+                inputHidden.value = "favourite";
+                inputid.value = e.id;
+              }
+            });
+            // Remove comment to fav
+            deleteFavourite.forEach((e)=>{
+              e.onclick = function(){
+                header.innerHTML = "Are your sure you want to remove this comment to favourite?";
+                buttonDelete.innerHTML = "Add";
+                document.body.appendChild(deleteSection);
+                inputHidden.value = "delete-favourite";
+                inputid.value = e.id;
+              }
+            });
+            // add comment to best
+            addBest.forEach((e)=>{
+              e.onclick = function(){
+                header.innerHTML = "Are your sure you want to add this comment to best?";
+                buttonDelete.innerHTML = "Add";
+                document.body.appendChild(deleteSection);
+                inputHidden.value = "best";
+                inputid.value = e.id;
+              }
+            });
+            // remove comment from best
+            deleteBest.forEach((e)=>{
+              e.onclick = function(){
+                header.innerHTML = "Are your sure you want to remove this comment from best?"
+                buttonDelete.innerHTML = "Remove";
+                document.body.appendChild(deleteSection);
+                inputHidden.value = "delete-best";
+                inputid.value = e.id;
+              }
+            });
+            buttonCancel.onclick = ()=>{
+              inputid.value = "";
+              deleteSection.remove();
+            }
+          </script>
+          {% endif %}
+          
+
+          <div class="main-title position-relative mt-3 project-title text-center mt-5 mb-5">
+            <p class="fw-bolder text-black-50">Write your comment here</p>
+          </div>
+          <div class="row send-message p-3 pt-5">
+            <div class="col-lg-6">
+              <h1 class="mb-5 hidden">Write your comment</h1>
+              <form class="hidden" method="POST" id="comment-form">
+                {% csrf_token %}
+                <div class="form-floating mb-3">
+                  <textarea name="commet-user" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 150px" required></textarea>
+                  <label for="floatingTextarea2" class="text-black-50">Comment</label>
+                </div>
+                <button class="btn mb-5 fw-bold p-2 sendbtn"><i class="fa-solid fa-paper-plane me-1"></i> Send Comment</button>
+              </form>
+            </div>
+            <div class="col-lg-6">
+              <img class="img-fluid " src="{% static 'img/comment2.png' %}" alt="contact-img">
+            </div>
+        </div>
+        </div>
+      </section>
+
+      <script defer src="{% static 'js/main.js' %}"></script>
+{% endblock content %}

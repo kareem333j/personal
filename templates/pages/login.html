@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/bondi.css' %}">
+  <link rel="stylesheet" href="{% static 'css/register.css' %}">
+  <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+
+  <!-- link -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css.map' %}">
+  <title>Karem | Login</title>
+
+  <style>
+    .register{
+      background-color: #eff7fa;
+    }
+    .register form{
+      background-color: #fff;
+    }
+    .register-link{
+      text-decoration: none;
+    }
+    .register-link:hover{
+      text-decoration:underline;
+    }
+    @media (max-width: 768px) {
+      .register{
+        width: 100%;
+      }
+      .register form{
+        width: 90%;
+      }
+    }
+  </style>
+
+</head>
+<body>
+    <div class="register d-flex justify-content-center align-items-center flex-column">
+        
+        <form class="login" id="login-form" method="POST">
+          {% for msg in messages %}
+          <div class="alert alert-danger w-100 log-faild" role="alert">
+            <i class="fa-regular fa-circle-xmark me-2"></i>{{msg}}
+          </div>
+
+          <script>
+            let msg = document.querySelector(".log-faild");
+            setTimeout(()=>{
+              msg.style.cssText = "display:none"
+            },3000);
+          </script>
+          {% endfor %}
+          {% csrf_token %}
+            <div class="mb-4 text-center">
+                <h1>Login</h1>
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Username</label>
+              <input type="text" name="username" class="form-control l-user wanted" aria-describedby="emailHelp" autofocus>
+              <div id="emailHelp" class="form-text u-help"></div>
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label">Password</label>
+              <input type="password" name="password" class="form-control l-pass wanted" id="pass-login">
+              <div id="emailHelp" class="form-text p-help"></div>
+            </div>
+            <div class="mb-3 form-check">
+              <input style="cursor: pointer;" type="checkbox"  class="form-check-input" id="exampleCheck1">
+              <label style="cursor: pointer;" class="form-check-label" for="exampleCheck1">Show password</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+          </form>
+          <div id="emailHelp" class="form-text p-help d-flex justify-content-between"><p style="margin-right: 10px;font-size:1.1em">you don't have an account?</p> <a class="register-link" href="{% url 'register' %}">Register</a></div>
+
+    </div>
+    
+    <script>
+      // login
+      //let L_inp_u = document.querySelector(".l-user");
+      //let L_inp_p = document.querySelector(".l-pass");
+      //let E_help = document.querySelector(".u-help");
+      //let P_help = document.querySelector(".p-help");
+      //E_help.style.display = 'none';
+      //P_help.style.display = 'none';
+//
+      //function E_error(){
+      //    L_inp_u.style.cssText = "border: 1px solid red;";
+      //    E_help.style.cssText = "color:red;display:flex";
+      //    E_help.textContent = "This Field Reqired";
+      //}
+      //function E_unerror(){
+      //    L_inp_u.style.cssText = "border:1px #dee2e solid;";
+      //    E_help.style.cssText = "color:red;display:none";
+      //    E_help.textContent = "This Field Reqired";
+      //}
+      //function P_error(){
+      //    L_inp_p.style.cssText = "border: 1px solid red";
+      //    P_help.style.cssText = "color:red;display:flex";
+      //    P_help.textContent = "This Field Reqired";
+      //}
+      //function P_unerror(){
+      //    L_inp_p.style.cssText = "border:1px #dee2e solid;";
+      //    P_help.style.cssText = "color:red;display:none";
+      //    P_help.textContent = "This Field Reqired";
+      //}
+//
+      //L_inp_u.onblur = ()=>{
+      //    if(L_inp_u.value === ""){
+      //        E_error();
+      //    }else{
+      //        E_unerror();
+      //    }
+      //}
+//
+      //L_inp_p.onblur = ()=>{
+      //    if(L_inp_p.value === ""){
+      //        P_error();
+      //    }else{
+      //        P_unerror();
+      //    }
+      //}
+
+      let passInput = document.querySelector('[name="password"]');
+      let showPass = document.querySelector(".form-check input");
+      showPass.addEventListener('click', ()=>{
+        if(passInput.type === "password"){
+          passInput.type = "text";
+        }else if(passInput.type === "text"){
+          passInput.type = "password";
+        }
+      })
+    </script>
+
+    <script src="{% static 'js/all.min.js' %}"></script>
+    <script src="{% static 'js/input_check.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    
+</body>
+</html>

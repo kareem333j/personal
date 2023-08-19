@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'img/logo/logo-no-background.svg' %}">
+    <link rel="stylesheet" href="{% static 'css/bondi.css' %}">
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+
+    <!-- sweet -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
+
+    <!-- link -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css.map' %}">
+
+    <!-- google icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0" />
+
+    <style>
+      .dropdown{
+        display: none;
+      }
+      @media (max-width:991px) {
+        .dropdown{
+          display: block;
+        }
+        .dashboardPc{
+          display: none;
+        }
+        .footer{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+        }
+      }
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 48
+      }
+      .drop-profile{
+        cursor: pointer;
+        border-left: 2px solid var(--green-color);
+        padding-left: 20px;
+      }
+      @media (min-width:992px) {
+        .drop-profile ul{
+          left: -105px !important;
+          top: 52px !important;
+        }
+      }
+      .drop-profile ul svg{
+        margin-right: 10px;
+      }
+      .drop-profile ul li a:hover{
+        background-color: var(--green-color) !important;
+      }
+      .search-form{
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 999;
+        background-color: #fff;
+        overflow: hidden;
+        padding: 10px 0 0 0;
+        left: 0;
+        transition: 0.6s all ease;
+        transform: translateY(-100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .search-form .close{
+        position: fixed;
+        top: 13px;
+        right: 30px;
+      }
+      .input-group{
+        width: 70%;
+        margin: auto;
+        border-radius: 10px;
+        box-shadow: 3px 3px 3px gray;
+      }
+      .input-group button{
+        background-color: #198754;
+        color: #fff;
+        font-weight: bold;
+      }
+      .input-group input{
+        font-weight: bold;
+        font-size: 1.2em;
+      }
+      @media (max-width: 768px) {
+        .input-group{
+          width: 85%;
+          margin-left: 5px;
+        }
+        .search-form .close{
+          right: 5px;
+        }
+      }
+      .navbar{
+        z-index: 998 !important;
+      }
+      .search-icon{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 10px;
+      }
+      .open-search-mobile{
+        display: none;
+      }
+      .dashPhone{
+        display: none;
+      }
+      @media (max-width: 991px) {
+        .open-search-mobile{
+          display: flex;
+          background-color: transparent;
+          border: 0;
+          outline: 0;
+          color: #fff;
+          font-weight: bold;
+          font-size: 20px;
+        }
+        .dashPhone{
+          display: block;
+        }
+      }
+      .msg{
+        position: fixed;
+        right: 10px;
+        top: 10px;
+        z-index: 999;
+      }
+      /* loading */
+      body{
+        overflow:hidden;
+      }
+      #preloader{
+        position: fixed;
+        width: 100%;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        z-index: 999;
+        background:black url("{% static 'img/loader.gif' %}") no-repeat center center;
+        background-size: 15%;
+
+      }
+
+    </style>
+</head>
+<body>
+  
+  <div id="preloader">
+  </div>
+    {% for msg in messages %}
+        <div class="alert alert-success mb-0 hi msg" role="alert">
+          <div class="container d-flex justify-content-between">
+            <div>
+              <i class="fa-solid fa-circle-check me-2"></i><strong class="Hello-msg"><span class="msg-span">{{msg}}</span></strong></div>
+            <div>
+            <h5 class="d-inline">3</h5><span>s</span>
+        </div>
+      </div>
+        </div>
+        <script>
+      let msgLogSuccess = document.querySelector(".msg");
+      let msgTimeLeave = document.querySelector(".msg h5");
+      let timerInterval = setInterval(timer, 1000);
+      function timer(){
+        msgTimeLeave.innerHTML--;
+        if(msgTimeLeave.innerHTML == "0"){
+          clearInterval(timerInterval);
+          msgLogSuccess.remove();
+        }
+      }
+        </script>
+    {% endfor %}
+    <!-- open search -->
+    <!-- <div class="search-form">
+      <form class="input-group mb-3">
+        <div class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+        <input type="text" class="form-control" placeholder="Search" name="search" aria-describedby="button-addon2">
+        <button class="btn btn-outline-success" type="button" id="button-addon2">Search</button>
+      </form>
+      <button class="btn btn-outline-danger close"><i class="fa-solid fa-xmark"></i></button>
+    </div> -->
+  <!-- close search -->
+  <nav class="navbar navbar-expand-lg">
+      <div class="container">
+      <!-- <button class="open-search-mobile"><i class="fa-solid fa-magnifying-glass"></i></button> -->
+
+        <a class="navbar-brand fw-bold fs-3" style="color: #fff;" href="{% url 'home' %}">
+          {% for blogLogo in blog %}
+          {{blogLogo.logo}}
+          {% endfor %}
+        </a>
+        <!-- open -->
+        <button class="navbar-toggler open" type="button" data-bs-toggle="collapse" data-bs-target="#main" aria-controls="main" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <!-- close -->
+        <button style="display: none;" class="navbar-toggler close" type="button" data-bs-toggle="collapse" data-bs-target="#main" aria-controls="main" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="main">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link p-lg-3 active home" aria-current="page" href="{% url 'home' %}">Home</a>
+            </li>
+            {% if request.user.Profile.admin == True or request.user.Profile.assistant == True %}
+            {% block dashPhone %}
+            {% endblock dashPhone %}
+            {% block dash %}
+            {% endblock dash %}
+            <li class="nav-item dashboardPc">
+              <a class="nav-link p-lg-3 dashboard" aria-current="page" href="{% url 'dashboard' %}">Dashboard</a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+              <a class="nav-link p-lg-3" href="{% url 'home' %}#comments">Comments</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link p-lg-3" href="{% url 'home' %}#projects">Projects</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link p-lg-3" href="{% url 'home' %}#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link p-lg-3" href="{% url 'home' %}#contact">Contact</a>
+            </li>
+            
+          </ul>
+          <!-- <div class="search ps-3 pe-3 d-none d-lg-block">
+            <i class="fa-solid fa-magnifying-glass fw-bold"></i>
+          </div> -->
+          {% if user.is_authenticated %}
+          <div class="dropdown d-flex drop-profile">
+            <div class="div-user-img dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              <img style="border: 0.1px solid #fff;background-color:#fff" src="{{request.user.Profile.imgUser}}" alt="userImg" class="img-fluid">
+              <i id="up" class="fa-solid fa-caret-down dropdown-toggle"></i>
+            </div>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><a class="dropdown-item" href="/profile/{{request.user.id}}/"><i class="fa-solid fa-user"></i> Profile</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+            </ul>
+          </div>
+          {% else %}
+            <div style="border-left: 1px solid var(--green-color);padding-left:15px">
+              <a id="main-btn-s" class="btn main-btn fw-bold me-2" href="{% url 'register' %}">Signup</a>
+              <a id="main-btn" class="btn main-btn fw-bold" href="{% url 'login' %}">Login</a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+    {% block content %}
+    
+    {% endblock content %}
+
+    <footer class="pt-4 pb-2">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12 d-flex justify-content-between align-items-center footer-content">
+              <p class="fw-normal text-center">Copyright © 2023 Karem Magdy. All Rights Reserves</p>
+              <ul class="mt-3 d-flex list-unstyled">
+                {% for i in social %}
+              <li><a href="{{i.facebook}}" target="_blank"><i class="fa-brands fa-facebook"> </i></a></li>
+              <li><a href="{{i.instagram}}" target="_blank"><i class="fa-brands fa-instagram"></i></a></li>
+              <li><a href="{{i.github}}" target="_blank"><i class="fa-brands fa-github">   </i></a></li>
+              <li><a href="{{i.linkedin}}" target="_blank"><i class="fa-brands fa-linkedin"> </i></a></li>
+              <!-- <li><a href="{{i.watsapp}}" target="_blank"><i class="fa-brands fa-whatsapp"> </i></a></li> -->
+              {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+    </footer>
+
+
+    <!-- <button class="btnUp">UP</button> -->
+    {% if user.is_authenticated %}
+    {% else %}
+    <script>
+      let going = false;
+      let commentForm = document.getElementById("comment-form");
+      commentForm.onsubmit = function(e){
+        e.preventDefault();
+      }
+      let sendMsg = document.querySelector(".send-message .sendbtn");
+      sendMsg.addEventListener('click',()=>{
+        swal ( "Oops" ,  "You must be logged in to get this feature!" ,  "error");
+        let log = document.createElement("button");
+        let logTxt = document.createTextNode("Login");
+        log.appendChild(logTxt);
+        let sweetFooter = document.querySelector(".swal-footer");
+        sweetFooter.appendChild(log)
+        let sweetBtn = document.querySelectorAll(".swal-footer button");
+        sweetBtn[1].innerHTML = "Login";
+        sweetBtn[1].className = "Login-sweet";
+        sweetBtn[1].style.cssText = "background:red;border:0;cursor:pointer;font-size:15px;padding:9px 15px;border-radius:5px;color:#FFF;position:relative;top:0px";
+        sweetBtn[1].addEventListener('click', ()=>{
+          location.href = "{% url 'login' %}";
+        })
+
+        sweetBtn[0].innerHTML = "Cancel";
+      });
+
+    </script>
+    {% endif %}
+    <script>
+      var loader = document.getElementById("preloader");
+      window.addEventListener("load",()=>{
+        loader.style.display = "none";
+        document.querySelector("body").style = "overflow:auto;";
+      });
+    </script>
+
+    <script src="{% static 'js/all.min.js' %}"></script>
+    
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    
+</body>
+</html>

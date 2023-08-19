@@ -1,0 +1,137 @@
+{% extends 'header/header.html' %}
+{% block dashPhone %}
+<li class="nav-item">
+    <a class="nav-link p-lg-3 dashboard dashPhone" aria-current="page" href="{% url 'dashboard' %}">Dashboard</a>
+</li>
+{% endblock dashPhone %}
+{% block content %}
+{% load static %}
+<title>Karem Magdy | Add-Project</title>
+<style>
+    section{
+        width: 100%;
+        min-height: 100vh;
+        padding-top: 50px;
+    }
+    .them{
+        margin: auto;
+        width: 70%;
+        background-color: #fff;
+        margin-bottom: 20px;
+        border-radius: 10px;
+    }
+    @media (max-width: 768px) {
+        .them{
+            width: 90%;
+        }
+    }
+    .lang-icons{
+        width: 100%;
+        background-color: #d1d1d13c;
+        padding: 10px 20px;
+        border-radius: 10px;
+        margin-top: 55px;
+        overflow: hidden;
+        height: 43px;
+        transition: all 0.9s;
+    }
+    .lang-icons p{
+        width: 100%;
+        cursor: pointer;
+    }
+    .lessIcon{
+        opacity: 0;
+    }
+</style>
+<section>
+    <div class="them" style="background-color:transparent !important;">
+        <h3 class="fw-bold mt-5">Add new project:</h3>
+    </div>
+    <form class="them p-4" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="projectName" class="form-label fw-bold">Name: </label>
+            <input type="text" name="name" class="form-control" placeholder="Project Name" required>
+        </div>
+        <div class="mb-3">
+            <label for="projectDescription" class="form-label fw-bold">Description: </label>
+            <textarea type="text" cols="12" rows="8" name="description" class="form-control" required placeholder="Project Description"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="projectName" class="form-label fw-bold">Link: </label>
+            <input type="url" name="link" class="form-control" placeholder="www.project.example">
+        </div>
+        <div class="mb-3">
+            <label for="projectImage" class="form-label fw-bold">Main Image: </label>
+            <input style="cursor: pointer !important;" type="file" name="main-img" class="form-control l-user" aria-describedby="emailHelp" required>
+            <div id="emailHelp" class="form-text u-help">This image that will appear as the main image of the project</div>
+        </div>
+        <hr>
+        <h4 class="fw-bold mt-2 mb-4">Descriptive images:</h4>
+
+        <div class="mb-3">
+            <label for="projectImage" class="form-label fw-bold">First Image: </label>
+            <input style="cursor: pointer !important;" type="file" name="img1" class="form-control l-user" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+            <label for="projectImage" class="form-label fw-bold">Second Image: </label>
+            <input style="cursor: pointer !important;" type="file" name="img2" class="form-control l-user" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+            <label for="projectImage" class="form-label fw-bold">Third Image: </label>
+            <input style="cursor: pointer !important;" type="file" name="img3" class="form-control l-user" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3 lang-icons">
+            <p class="m-0 fw-bold d-flex justify-content-between align-items-center mb-4 moreIcon"><span>Add language icons</span><i id="icon" class="fa-solid fa-caret-up"></i></p>
+            <p class="m-0 fw-bold d-flex justify-content-between align-items-center mb-4 lessIcon"><span>Add language icons</span><i id="icon" class="fa-solid fa-caret-down"></i></p>
+            <div class="mb-3 form-check">
+                <input style="cursor: pointer;" type="checkbox" name="javascript" class="form-check-input" id="javascripts">
+                <label style="cursor: pointer;" class="form-check-label" for="javascripts">JavaScript</label>
+            </div>
+            <div class="mb-3 form-check">
+                <input style="cursor: pointer;" type="checkbox" name="django" class="form-check-input" id="django">
+                <label style="cursor: pointer;" class="form-check-label" for="django">Django</label>
+            </div>
+            <div class="mb-3 form-check">
+                <input style="cursor: pointer;" type="checkbox" name="html" class="form-check-input" id="html">
+                <label style="cursor: pointer;" class="form-check-label" for="html">Html</label>
+            </div>
+            <div class="mb-3 form-check">
+                <input style="cursor: pointer;" type="checkbox" name="css" class="form-check-input" id="css">
+                <label style="cursor: pointer;" class="form-check-label" for="css">Css</label>
+            </div>
+            <div class="mb-3 form-check">
+                <input style="cursor: pointer;" type="checkbox" name="python" class="form-check-input" id="python">
+                <label style="cursor: pointer;" class="form-check-label" for="python">Python</label>
+            </div>
+            <div class="mb-3 form-check">
+                <input style="cursor: pointer;" type="checkbox" name="bootstrap" class="form-check-input" id="bootstrap">
+                <label style="cursor: pointer;" class="form-check-label" for="bootstrap">BootStrap</label>
+            </div>
+            <div class="mb-3 form-check">
+                <input style="cursor: pointer;" type="checkbox" name="postgresql" class="form-check-input" id="postgresql">
+                <label style="cursor: pointer;" class="form-check-label" for="postgresql">Postgresql</label>
+            </div>
+        </div>
+        <button class="btn main-btn btn-success">Save</button>
+    </form>
+    <br><br><br>
+</section>
+<script>
+    let addLangs = document.querySelector(".lang-icons .moreIcon");
+    let lessIcons = document.querySelector(".lang-icons .lessIcon");
+    let divLangs = document.querySelector(".lang-icons");
+    addLangs.addEventListener('click', ()=>{
+        divLangs.style.height = '350px';
+        lessIcons.style = "opacity:1";
+        addLangs.style = "display:none !important";
+    });
+    lessIcons.addEventListener('click', ()=>{
+        divLangs.style.height = '43px';
+        lessIcons.style = "opacity:0";
+        addLangs.style = "display:flex !important";
+    });
+</script>
+
+<script src="{% static 'js/dashboard.js' %}"></script>
+{% endblock content %}

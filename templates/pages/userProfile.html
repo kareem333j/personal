@@ -1,0 +1,251 @@
+{% extends 'header/header.html' %}
+{% block dashPhone %}
+<li class="nav-item">
+    <a class="nav-link p-lg-3 dashboard dashPhone" aria-current="page" href="{% url 'dashboard' %}">Dashboard</a>
+</li>
+{% endblock dashPhone %}
+{% block content %}
+{% load static %}
+<title>Karem Magdy | Profile</title>
+
+<style>
+    section{
+        width: 100%;
+        min-height: 100vh;
+        background-color: var(--section-color);
+        display: flex;
+        justify-content: center;
+        align-items: start;
+        padding-top: 100px;
+    }
+    .container form{
+        width: 100%;
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 30px;
+        flex-direction: column;
+        margin: auto;
+    }
+    .user-info{
+        width: 100%;
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 30px;
+        flex-direction: column;
+        margin: auto;
+        margin-bottom: 20px;
+    }
+    .container form button{
+        background-color: rgb(72, 235, 72);
+        color: #fff;
+        font-weight: bold;
+    }
+    .container form button:hover{
+        background-color: rgb(72, 235, 72);
+        opacity: 0.9;
+    }
+    .container form div input{
+        cursor: text;
+    }
+    .container form div{
+        width: 100%;
+    }
+    .container form .form-check{
+        justify-content: space-between;
+    }
+    .container .user-data{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+    .container .user-data img{
+        border-radius: 100%;
+        border: 0.1px solid black;
+        width: 150px;
+        height: 150px;
+    }
+    .div-form{
+        position: relative;
+    }
+    .container .user-info .com{
+        width: 100%;
+        background-color: var(--dark-color);
+        margin-bottom: 10px;
+        border-radius: 10px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .container .user-info .com h4{
+        color: #fff;
+        font-size: 1.1em;
+    }
+    .container .user-info .com p{
+        margin-bottom: 0;
+    }
+    @media (max-width:768px) {
+        .userEditDiv{
+            padding: 0;
+        }
+    }
+</style>
+
+
+<section>
+    <div class="container row">
+        <div class="user-data col-lg-2">
+            <a href="#"><img class="mb-3" src="{{userId.img.url}}" alt="UserImg"></a>
+            <p class="text-black-50 fw-bold" style="font-size: 1.2em;">@{{userId.user.username}}</p>
+        </div>
+        <div class="div-form col-lg-10 m-0 p-0">
+            {% if request.user.id == userId.user.id %}
+            <h3 class="fw-bold">My-info:</h3>
+            {% else %}
+            <h3 class="fw-bold">User-info:</h3>
+            {% endif %}
+            <div class="user-info">
+                <h4 class="fw-bold">
+                    {{userId.name_f}} {{userId.name_l}}
+                    {% if userId.admin == True %}
+                    <span title="admin" style="color: blue;font-size:0.8em" class="material-symbols-outlined">
+                      verified
+                      </span>
+                    {% endif %}
+                </h4>
+                <p><strong>Date joined:</strong> <span class="text-black-50 fw-bold">{{userId.user.date_joined}}</span></p>
+                <p><strong>Last Login:</strong> <span class="text-black-50 fw-bold">{{userId.user.last_login}}</span></p>
+                <p><strong>User-ID:</strong> <span class="fw-medium">{{userId.user.id}}</span></p>
+                <p><strong>Email:</strong> <span class="fw-medium">{{userId.email}}</span></p>
+            </div>
+            {% if request.user.id == userId.user.id %}
+            <h3 class="fw-bold mt-5">My-Comments:</h3>
+            {% else %}
+            <h3 class="fw-bold mt-5">User-Comments:</h3>
+            {% endif %}
+            
+            <div class="user-info">
+                {% if comCount == 0 %}
+                    <div class="com text-center">
+                        <h4>No Comments</h4>
+                    </div>
+                {% else %}
+                    {% for i in comments reversed %}
+                    <div class="com">
+                        <h4 style="line-height: 1.5;">{{i.commet}}</h4>
+                        <p class="text-white-50">{{i.time}}</p>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            {% if request.user.id == userId.user.id %}
+            
+            {% endif %}
+            {% if request.user.Profile.admin == True or request.user.Profile.assistant == True or request.user.id == userId.user.id %}
+                {% if request.user.id == userId.user.id %}
+                <h3 class="fw-bold mt-5">My-Messages:</h3>
+                {% else %}
+                <h3 class="fw-bold mt-5">User-Messages:</h3>
+                {% endif %}
+            
+            <div class="user-info">
+                {% if msgCount == 0 %}
+                    <div class="com text-center">
+                        <h4>No Messages</h4>
+                    </div>
+                {% else %}
+                    {% for i in msg reversed %}
+                    <div class="com">
+                        <h4 style="line-height: 1.5;">{{i.msg}}</h4>
+                        <p class="text-white-50">{{i.time}}</p>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <!-- user editing -->
+            {% if request.user.Profile.admin == True or request.user.id == userId.user.id %}
+                <h3 class="fw-bold mt-5">Edit-info: </h3>
+                <div class="user-info userEditDiv">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3 col-2">
+                            <label for="exampleInputEmail1" class="form-label">First Name</label>
+                            <input type="text" name="f_name" class="form-control l-user" aria-describedby="emailHelp" value="{{userId.name_f}}">
+                            <div id="emailHelp" class="form-text u-help"></div>
+                        </div>
+                        <div class="mb-3 col-2">
+                            <label for="exampleInputEmail1" class="form-label">Last Name</label>
+                            <input type="text" name="l_name" class="form-control l-user" aria-describedby="emailHelp" value="{{userId.name_l}}">
+                            <div id="emailHelp" class="form-text u-help"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Username</label>
+                            <input type="text" name="username" class="form-control l-user" aria-describedby="emailHelp" value="{{userId.user.username}}">
+                            <div id="emailHelp" class="form-text u-help"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control l-user" aria-describedby="emailHelp" value="{{userId.user.email}}">
+                            <div id="emailHelp" class="form-text u-help"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Image</label>
+                            <input style="cursor: pointer !important;" type="file" name="image" class="form-control l-user" aria-describedby="emailHelp" src="{{userId.img.url}}">
+                            <div id="emailHelp" class="form-text u-help">{{userId.img.url}}</div>
+                        </div>
+                        <button class="btn main-btn mb-0 mt-2">Update</button>
+                    </form>
+                </div>
+            {% endif %}
+            {% if request.user.id == userId.user.id %}
+            <div style="border-left: 10px solid red;background-color: #e69393 !important;" class="user-info p-2 text-center"><h3 style="color:#fff;font-size:1em" class="fw-bold">We'll never share your data with anyone else.</h3></div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<script>
+    // scrolling
+    let section = document.querySelector("section");
+    let navbar = document.querySelector(".navbar");
+    let navDropDown = document.querySelector(".drop-profile ul");
+    let navDropLink = document.querySelectorAll(".drop-profile ul li a");
+
+    // go up btn and other when scroll
+    let btnUp = document.createElement("button");
+    let btnTxt = document.createTextNode("UP");
+    btnUp.appendChild(btnTxt);
+    btnUp.className = "btnUp";
+    document.body.appendChild(btnUp);
+    btnUp.style.cssText = "display:none;background-color: black;position: fixed;bottom: 20px;right: 20px;padding: 5px 10px;color: #fff;border: 0;cursor: pointer;border-radius:10px;font-size:1.3em";
+    btnUp.innerHTML = '<i class="fa-solid fa-circle-arrow-up"></i>'
+
+    window.onscroll = function(){
+        if(window.scrollY >= section.offsetTop+70){
+            navbar.style = "box-shadow: 0 0 20px #181f2b;position: fixed;width:100%;z-index:999;background-color:rgba(34, 34, 34, 0.85)";
+            btnUp.style.cssText = "display:block;background-color: black;position: fixed;bottom: 20px;right: 20px;padding: 5px 10px;color: #fff;border: 0;cursor: pointer;border-radius:10px;font-size:1.3em";
+            navDropDown.style = "background-color:rgba(34, 34, 34, 0.85);";
+            for(let i =0; i < navDropLink.length; i++){
+                navDropLink[i].style = 'color:#fff';
+            }
+        }
+        if(window.scrollY < section.offsetTop+70){
+            navDropDown.style = "background-color:#fff;";
+            navbar.style = "box-shadow: 0";
+            btnUp.style.cssText = "display:block";
+            for(let i =0; i < navDropLink.length; i++){
+                navDropLink[i].style = 'color:#000';
+            }
+        }
+    }
+    btnUp.onclick = ()=>{
+        window.scrollTo({
+            top:0,
+            behavior: 'smooth'
+        });
+    }
+</script>
+{% endblock content %}
