@@ -8,6 +8,7 @@ import json
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from . decorators import unauthenticated_user, allowed_users
+from django.views.decorators.csrf import csrf_exempt
 
 # @login_required(login_url='sign-in')
 
@@ -15,6 +16,7 @@ from . decorators import unauthenticated_user, allowed_users
 from django.contrib.auth.models import Group
 
 # Create your views here.
+@csrf_exempt
 def home(request):
     if request.method == "GET":
         userMsg = request.GET.get('userMsg')
@@ -173,6 +175,7 @@ def dashboard(request):
         return redirect("home")
     
 
+@csrf_exempt
 def editUser(request,pk):
     if request.user.Profile.admin == True:
         user = User.objects.get(id = pk)
@@ -207,6 +210,7 @@ def editUser(request,pk):
         return redirect("dashboard")
     
 # user profile
+@csrf_exempt
 def userProfile(request,pk):
     user = User.objects.get(id = pk)
     userProfile = Profile.objects.get(user = user)
@@ -237,6 +241,7 @@ def userProfile(request,pk):
     return render(request, 'pages/userProfile.html', context)
 
 # edit project
+@csrf_exempt
 def edit_project(request,pk):
     if request.user.is_authenticated:
         if request.user.Profile.admin == True or request.user.Profile.assistant == True:
@@ -328,6 +333,7 @@ def edit_project(request,pk):
     else:
         return redirect('home')
 # add project
+@csrf_exempt
 def addProject(request):
     if request.user.is_authenticated:
         if request.user.Profile.admin == True or request.user.Profile.assistant == True:
@@ -400,6 +406,7 @@ def addProject(request):
 
 
 # authentication
+@csrf_exempt
 @unauthenticated_user
 def userLogin(request):
     if request.method == "POST":
@@ -416,6 +423,7 @@ def userLogin(request):
     else:
         return render(request, 'pages/login.html')
 
+@csrf_exempt
 @unauthenticated_user
 def register(request):
     form = CreateUserForm()
